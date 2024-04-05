@@ -1,4 +1,14 @@
 import random
+import os
+
+def clean():
+  # For Windows
+  if os.name == 'nt':
+    _ = os.system('cls')
+  
+  # For macOS and Linux
+  else:
+    _ = os.system('clear')
 
 def check_word(answer, attempt):
     result = ["x","x","x","x","x"]
@@ -48,7 +58,7 @@ while count < 6:
     attempt = input("Guess: ")
   guesses[count-1] = attempt
   states[count-1] = check_word(answer, attempt)
-  print("___________________")
+  clean()
   for i in range(len(guesses)):
     print(guesses[i])
     print(states[i])
