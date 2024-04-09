@@ -5,7 +5,7 @@ def iterate_file(in_directory, out_directory, scale):
     for file in os.listdir(os.fsencode(in_directory)):
         filename = os.fsdecode(file)
         head,sep,tail = filename.partition(".")
-        if filename.endswith(".jpeg") or filename.endswith(".jpg"):
+        if filename.endswith(".jpeg"):
             ascii_conversion(in_directory + filename, out_directory + head, scale)
 
 def ascii_conversion(file, target, scale):
@@ -53,12 +53,12 @@ def ascii_conversion(file, target, scale):
     out.close()
 
     if os.path.exists(out_directory + "resized.jpeg"):
-        os.remove("resized.jpeg")
+        os.remove(out_directory + "resized.jpeg")
 
-# insert images into the named directory and it will convert them into scaled
+# insert .jpeg images into the named directory and it will convert them into scaled
 # text equivalent images of the same name, saved in the output folder
 # scale will scale the images down by the set amount
 in_directory = "./images/"
 out_directory = "./output/"
-scale = 1
+scale = 4
 iterate_file(in_directory, out_directory, scale)
