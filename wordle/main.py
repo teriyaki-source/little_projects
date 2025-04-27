@@ -7,13 +7,13 @@ white = "\U00002B1C"
 yellow = "\U0001F7E8"
 
 def get_data():
-  f = open("./wordle-La.txt", "r")
+  f = open("wordle-La.txt", "r")
   can_be = f.readlines()
   for i in range(len(can_be)):
     can_be[i] = can_be[i].strip()
   f.close()   
 
-  f = open("./wordle-Ta.txt", "r")
+  f = open("wordle-Ta.txt", "r")
   can_guess = f.readlines()
   for i in range(len(can_guess)):
     can_guess[i] = can_guess[i].strip()
@@ -30,12 +30,12 @@ def clean():
   else:
     _ = os.system('clear')
 
-def print_board(attempt, guesses, states, letters):
+def print_board(attempt, guesses, states, letters, library):
   clean()
   if len(attempt) != 5:
     print("Needs to be a 5 letter word!")
   elif attempt not in library:
-    print("{word:s} not in the word list".format(word = attempt))
+    print(f"{attempt} not in the word list")
   
   print("Available Letters:")
   for i in letters:
@@ -74,34 +74,37 @@ def check_word(answer, attempt, letters):
           letters.remove(attempt[i])
   return "".join(result)
   
+def main():
+  guesses = [" "]*6
+  states = [" "]*6
 
-guesses = [" "]*6
-states = [" "]*6
+  count = 0
+  attempt = ""
+  can_be, can_guess, answer, library = get_data()
+  available_letters = list(map(chr, range(97, 123)))
 
-count = 0
-attempt = ""
-can_be, can_guess, answer, library = get_data()
-available_letters = list(map(chr, range(97, 123)))
+  # game start
+  clean()
+  print("** Bootleg Wordle **")
+  print("By Luke, for Chiara")
 
-# game start
-clean()
-print("** Bootleg Wordle **")
-print("By Luke, for Chiara")
-
-while count < 6:
-  count += 1
-  attempt = input("Guess: ")
-  while len(attempt) != 5 or attempt not in library:
-    print_board(attempt, guesses, states, available_letters)
+  while count < 6:
+    count += 1
     attempt = input("Guess: ")
-  guesses[count-1] = attempt
-  states[count-1] = check_word(answer, attempt, available_letters)
-  print_board(attempt, guesses, states, available_letters)
-  if attempt == answer:
-    break
+    while len(attempt) != 5 or attempt not in library:
+      print_board(attempt, guesses, states, available_letters, library)
+      attempt = input("Guess: ")
+    guesses[count-1] = attempt
+    states[count-1] = check_word(answer, attempt, available_letters)
+    print_board(attempt, guesses, states, available_letters, library)
+    if attempt == answer:
+      break
 
-if attempt == answer:
-  print("Victory! The word was '{str:s}'.".format(str = answer))
-  print("Bootleg Wordle in {num:d}".format(num = count))
-else:
-  print("Better luck next time")
+  if attempt == answer:
+    print(f"Victory! The word was '{answer}'.")
+    print(f"Bootleg Wordle in {count}")
+  else:
+    print("Better luck next time")
+
+if __name__ == "__main__":
+  main()
